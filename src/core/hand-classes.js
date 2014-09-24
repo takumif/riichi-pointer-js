@@ -25,6 +25,7 @@ function Hand(concealedCombinaisons, openCombinaisons, seatWind, roundWind, winn
     this.isIppatsu = false;
     this.doraTiles = doraTiles;
     this.uraDoraTiles = uraDoraTiles;
+    this.dealerRepeat = 0;
     
     this.isFinish = function(){
         var nbPair = 0,
