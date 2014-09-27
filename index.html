@@ -107,29 +107,55 @@
             </div>
             
             <div style="margin: 10px 0;">
-                <fieldset>
-                    <legend>Winds</legend>
-                    
-                    <div style="line-height: 14px; float: left; max-width: 40%; overflow: hidden; margin-right: 5%;">
-                        <span class="txt1">Prevalent: <br /></span>
-                        <select data-bind="{value: prevalentWind}">
-                            <option value="east">East</option>
-                            <option value="south">South</option>
-                            <option value="west">West</option>
-                            <option value="north">North</option>
-                        </select>
-                    </div>
-                    
-                    <div style="line-height: 14px; float: left; max-width: 40%; overflow: hidden;">
-                        <span class="txt1">Seat: <br /></span>
-                        <select data-bind="{value: seatWind}">
-                            <option value="east">East</option>
-                            <option value="south">South</option>
-                            <option value="west">West</option>
-                            <option value="north">North</option>
-                        </select>
-                    </div>
-                </fieldset>
+                <div style="float: left; width: 50%;">
+                    <fieldset>
+                        <legend>Winds</legend>
+                        
+                        <div style="line-height: 14px; float: left; max-width: 40%; overflow: hidden; margin-right: 5%;">
+                            <span class="txt1">Prevalent: <br /></span>
+                            <select data-bind="{value: prevalentWind}">
+                                <option value="east">East</option>
+                                <option value="south">South</option>
+                                <option value="west">West</option>
+                                <option value="north">North</option>
+                            </select>
+                        </div>
+                        
+                        <div style="line-height: 14px; float: left; max-width: 40%; overflow: hidden;">
+                            <span class="txt1">Seat: <br /></span>
+                            <select data-bind="{value: seatWind}">
+                                <option value="east">East</option>
+                                <option value="south">South</option>
+                                <option value="west">West</option>
+                                <option value="north">North</option>
+                            </select>
+                        </div>
+                    </fieldset>
+                </div>
+                
+                <div style="float: left; width: 50%;">
+                    <fieldset>
+                        <legend>Other</legend>
+                        <div style="line-height: 14px; float: left; overflow: hidden;">
+                            <span class="txt1">Dealer repeat: <br /></span>
+                            <select data-bind="{value: dealerRepeat}">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                    </fieldset>
+                </div>
+                
+                <div style="clear: both;"></div>
             </div>
             
             <div style="margin: 10px 0;">
@@ -226,6 +252,22 @@
                         </tr>
                     </tbody>
                 </table>
+                
+                <br /><b>Bonus point details</b><br />
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Point</th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: bonusPointsDetails">
+                        <tr>
+                            <td data-bind="html: description"></td>
+                            <td data-bind="html: total"></td>
+                        </tr>
+                    </tbody>
+                </table>
             
             </div>
         </div>
@@ -273,10 +315,6 @@
     <script src="src/gui/TouchCombinaisonDeletion.js"></script>
     <script src="src/gui/DragDropDoraDeletion.js"></script>
     <script src="src/gui/DragDropCombinaisonDeletion.js"></script>
-    
-    <script>
-        var viewModel = new RiichiMahjongPointerViewModel();
-        ko.applyBindings(viewModel);
-    </script>
+    <script src="vendor/require.js" data-main="src/gui/Index.js"></script>
 </body>
 </html>

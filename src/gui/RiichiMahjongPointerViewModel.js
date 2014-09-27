@@ -2,8 +2,9 @@
  * View Model Class that handle the logic of the user interface for the application
  * Use the framework KnockoutJS to manage observable properties and view bindings.
  */
-function RiichiMahjongPointerViewModel() {
+function RiichiMahjongPointerViewModel(bonusPointCalculator) {
     var self = this;
+    var bonusPointCalculator = bonusPointCalculator;
     
     /**
      * Title of the current active view on the interface
@@ -72,6 +73,11 @@ function RiichiMahjongPointerViewModel() {
     self.openCombinaisons = ko.observableArray([]);
     
     /**
+     * number of dealer repeat
+     */
+    self.dealerRepeat = ko.observable(0);
+    
+    /**
      * indicate if the adding process is for dora or not (ex. : combinaison)
      */
     self.addForDora = null;
@@ -120,6 +126,16 @@ function RiichiMahjongPointerViewModel() {
     self.pointsTotal = ko.observable('');
     
     /**
+     * list of all bonus point for the player hand
+     */
+    self.bonusPointsDetails = ko.observableArray([]);
+    
+    /**
+     * bonus point total of the player hand
+     */
+    self.bonusPointsTotal = ko.observable(0);
+    
+    /**
      * computed property that indicate if the player hand is in a finish state (complete)
      */
     self.handIsFinish = ko.computed(function(){
@@ -140,6 +156,7 @@ function RiichiMahjongPointerViewModel() {
         self.winningTile = null;
         self.concealedCombinaisons([]);
         self.openCombinaisons([]);
+        self.dealerRepeat(0);
         self.addForDora = null;
         self.addIsConcealed = null
         self.addType(null);
@@ -149,6 +166,8 @@ function RiichiMahjongPointerViewModel() {
         self.pointsFuDetails([]);
         self.pointsFuTotal(0);
         self.pointsTotal('');
+        self.bonusPointsDetails([]);
+        self.bonusPointsTotal(0);
     };
     
     /**
@@ -303,6 +322,8 @@ function RiichiMahjongPointerViewModel() {
             self.winningRiichiType() === 'double riichi ippatsu';
         hand.isIppatsu = self.winningRiichiType() === 'riichi ippatsu' ||
             self.winningRiichiType() === 'double riichi ippatsu';
+            
+        hand.dealerRepeat = self.dealerRepeat();
         
         var patterns = [
             new TanyaouChuu(),
@@ -354,6 +375,10 @@ function RiichiMahjongPointerViewModel() {
         var fuResult = fuCalculator.calculate(hand);
         self.pointsFuDetails(fuResult.details);
         self.pointsFuTotal(fuResult.total);
+        
+        var bonusPointResult = bonusPointCalculator.calculate(hand);
+        self.bonusPointsTotal(bonusPointResult.total);
+        self.bonusPointsDetails(bonusPointResult.details);
         
         var pointCalculator = new PointCalculator();
         var pointResult = pointCalculator.calculate(hand, resultTotal, fuResult.total);
