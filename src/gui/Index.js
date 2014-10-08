@@ -1,8 +1,6 @@
-; define(['../core/DealerRepeatPointCalculator', '../core/PointCalculatorGroup'], function (DealerRepeatPointCalculator, PointCalculatorGroup) {
+; define(['factories/BonusPointCalculatorFactory'], function (BonusPointCalculatorFactory) {
     'use strict';
     
-    var bonusPointCalculators = new PointCalculatorGroup([DealerRepeatPointCalculator]);
-    
-    var viewModel = new RiichiMahjongPointerViewModel(bonusPointCalculators);
+    var viewModel = new RiichiMahjongPointerViewModel(BonusPointCalculatorFactory.instantiate());
     ko.applyBindings(viewModel);
 });
