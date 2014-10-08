@@ -381,7 +381,7 @@ function RiichiMahjongPointerViewModel(bonusPointCalculator) {
         self.bonusPointsDetails(bonusPointResult.details);
         
         var pointCalculator = new PointCalculator();
-        var pointResult = pointCalculator.calculate(hand, resultTotal, fuResult.total);
+        var pointResult = pointCalculator.calculate(hand, resultTotal, fuResult.total, bonusPointResult.total);
         
         var pointHtml = '';
         if (hand.seatWind === 'east') { // dealer

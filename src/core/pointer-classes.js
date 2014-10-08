@@ -113,32 +113,36 @@ FuCalculator.prototype.calculate = function(hand) {
     return result;
 };
 
-PointCalculator.prototype.calculate = function(hand, han, fu) {
+PointCalculator.prototype.calculate = function(hand, han, fu, bonusPoints) {
+    if (!bonusPoints) {
+        bonusPoints = 0;
+    }
+
     if (han === 5) { // mangan
-        if (hand.seatWind === 'east' && hand.winningType === 'tsumo') return 4000;
-        if (hand.seatWind === 'east' && hand.winningType === 'ron') return 12000;
-        if (hand.seatWind !== 'east' && hand.winningType === 'ron') return 8000;
-        if (hand.seatWind !== 'east' && hand.winningType === 'tsumo') return { dealer: 4000, nonDealer: 2000 };
+        if (hand.seatWind === 'east' && hand.winningType === 'tsumo') return 4000 + (bonusPoints / 3);
+        if (hand.seatWind === 'east' && hand.winningType === 'ron') return 12000 + bonusPoints;
+        if (hand.seatWind !== 'east' && hand.winningType === 'ron') return 8000 + bonusPoints;
+        if (hand.seatWind !== 'east' && hand.winningType === 'tsumo') return { dealer: 4000 + (bonusPoints / 3), nonDealer: 2000 + (bonusPoints / 3) };
     } else if (han >= 6 && han <= 7) { // haneman
-        if (hand.seatWind === 'east' && hand.winningType === 'tsumo') return 6000;
-        if (hand.seatWind === 'east' && hand.winningType === 'ron') return 18000;
-        if (hand.seatWind !== 'east' && hand.winningType === 'ron') return 12000;
-        if (hand.seatWind !== 'east' && hand.winningType === 'tsumo') return { dealer: 6000, nonDealer: 3000 };
+        if (hand.seatWind === 'east' && hand.winningType === 'tsumo') return 6000 + (bonusPoints / 3);
+        if (hand.seatWind === 'east' && hand.winningType === 'ron') return 18000 + bonusPoints;
+        if (hand.seatWind !== 'east' && hand.winningType === 'ron') return 12000 + bonusPoints;
+        if (hand.seatWind !== 'east' && hand.winningType === 'tsumo') return { dealer: 6000 + (bonusPoints / 3), nonDealer: 3000 + (bonusPoints / 3) };
     } else if (han >= 8 && han <= 10) { // baiman
-        if (hand.seatWind === 'east' && hand.winningType === 'tsumo') return 8000;
-        if (hand.seatWind === 'east' && hand.winningType === 'ron') return 24000;
-        if (hand.seatWind !== 'east' && hand.winningType === 'ron') return 16000;
-        if (hand.seatWind !== 'east' && hand.winningType === 'tsumo') return { dealer: 8000, nonDealer: 4000 };
+        if (hand.seatWind === 'east' && hand.winningType === 'tsumo') return 8000 + (bonusPoints / 3);
+        if (hand.seatWind === 'east' && hand.winningType === 'ron') return 24000 + bonusPoints;
+        if (hand.seatWind !== 'east' && hand.winningType === 'ron') return 16000 + bonusPoints;
+        if (hand.seatWind !== 'east' && hand.winningType === 'tsumo') return { dealer: 8000 + (bonusPoints / 3), nonDealer: 4000 + (bonusPoints / 3) };
     } else if (han >= 11 && han <= 12) { // sanbaiman
-        if (hand.seatWind === 'east' && hand.winningType === 'tsumo') return 12000;
-        if (hand.seatWind === 'east' && hand.winningType === 'ron') return 36000;
-        if (hand.seatWind !== 'east' && hand.winningType === 'ron') return 24000;
-        if (hand.seatWind !== 'east' && hand.winningType === 'tsumo') return { dealer: 12000, nonDealer: 6000 };
+        if (hand.seatWind === 'east' && hand.winningType === 'tsumo') return 12000 + (bonusPoints / 3);
+        if (hand.seatWind === 'east' && hand.winningType === 'ron') return 36000 + bonusPoints;
+        if (hand.seatWind !== 'east' && hand.winningType === 'ron') return 24000 + bonusPoints;
+        if (hand.seatWind !== 'east' && hand.winningType === 'tsumo') return { dealer: 12000 + (bonusPoints / 3), nonDealer: 6000 + (bonusPoints / 3) };
     } else if (han >= 13) { // yakuman
-        if (hand.seatWind === 'east' && hand.winningType === 'tsumo') return 16000;
-        if (hand.seatWind === 'east' && hand.winningType === 'ron') return 48000;
-        if (hand.seatWind !== 'east' && hand.winningType === 'ron') return 32000;
-        if (hand.seatWind !== 'east' && hand.winningType === 'tsumo') return { dealer: 16000, nonDealer: 8000 };
+        if (hand.seatWind === 'east' && hand.winningType === 'tsumo') return 16000 + (bonusPoints / 3);
+        if (hand.seatWind === 'east' && hand.winningType === 'ron') return 48000 + bonusPoints;
+        if (hand.seatWind !== 'east' && hand.winningType === 'ron') return 32000 + bonusPoints;
+        if (hand.seatWind !== 'east' && hand.winningType === 'tsumo') return { dealer: 16000 + (bonusPoints / 3), nonDealer: 8000 + (bonusPoints / 3) };
     }
 
     var points = fu * Math.pow(2, 2+han),
@@ -180,6 +184,17 @@ PointCalculator.prototype.calculate = function(hand, han, fu) {
         result.nonDealer = 2000;
     } else if (hand.seatWind !== 'east' && hand.winningType === 'ron' && result > 8000) {
         result = 8000;
+    }
+    
+    if (hand.winningType === 'tsumo' && hand.seatWind === 'east') {
+        result += bonusPoints / 3;
+    } else if (hand.winningType === 'ron' && hand.seatWind === 'east') {
+        result += bonusPoints;
+    } else if (hand.winningType === 'tsumo' && hand.seatWind !== 'east') {
+        result.dealer += bonusPoints / 3;
+        result.nonDealer += bonusPoints / 3;
+    } else if (hand.winningType === 'ron' && hand.seatWind !== 'east') {
+        result += bonusPoints;
     }
 
     return result;

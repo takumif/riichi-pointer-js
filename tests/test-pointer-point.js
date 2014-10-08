@@ -146,6 +146,18 @@ function TestPointerPoint() {
             }
         });
         
+        test('bonus points must be split between all losing players during dealer tsumo', function () {
+            var bonusPoints = 300;
+            dealerHand.winningType = 'tsumo';
+            for (var i = 0; i < dealerTsumo.length; i++) {
+                var han = dealerTsumo[i].han,
+                    fu = dealerTsumo[i].fu,
+                    expected = dealerTsumo[i].expected + (bonusPoints / 3),
+                    result = pointCalculator.calculate(dealerHand, han, fu, bonusPoints);
+                ok(result === expected, 'Dealer tsumo with ' + han + ' han and ' + fu + ' fu and ' + bonusPoints + ' bonus points expected ' + expected + ' points but receive ' + result + ' points');
+            }
+        });
+        
         var dealerRon = [
             { han: 1, fu: 20, expected: 1000 },
             { han: 1, fu: 30, expected: 1500 },
@@ -282,6 +294,18 @@ function TestPointerPoint() {
                     expected = dealerRon[i].expected,
                     result = pointCalculator.calculate(dealerHand, han, fu);
                 ok(result === expected, 'Dealer ron with ' + han + ' han and ' + fu + ' fu expected ' + expected + ' points but receive ' + result + ' points');
+            }
+        });
+        
+        test('bonus points must be pay only by the losing players during dealer ron', function () {
+            var bonusPoints = 300;
+            dealerHand.winningType = 'ron';
+            for (var i = 0; i < dealerRon.length; i++) {
+                var han = dealerRon[i].han,
+                    fu = dealerRon[i].fu,
+                    expected = dealerRon[i].expected + bonusPoints,
+                    result = pointCalculator.calculate(dealerHand, han, fu, bonusPoints);
+                ok(result === expected, 'Dealer ron with ' + han + ' han and ' + fu + ' fu and ' + bonusPoints + ' bonus points expected ' + expected + ' points but receive ' + result + ' points');
             }
         });
         
@@ -426,6 +450,20 @@ function TestPointerPoint() {
             }
         });
         
+        test('bonus points must be split between all losing players during non-dealer tsumo', function () {
+            var bonusPoints = 300;
+            nonDealerHand.winningType = 'tsumo';
+            for (var i = 0; i < nonDealerTsumo.length; i++) {
+                var han = nonDealerTsumo[i].han,
+                    fu = nonDealerTsumo[i].fu,
+                    expectedFromDealer = nonDealerTsumo[i].expectedFromDealer + (bonusPoints / 3),
+                    expectedFromNonDealer = nonDealerTsumo[i].expectedFromNonDealer + (bonusPoints / 3),
+                    result = pointCalculator.calculate(nonDealerHand, han, fu, bonusPoints);
+                ok(result.dealer === expectedFromDealer, 'Non-dealer tsumo with ' + han + ' han and ' + fu + ' fu and ' + bonusPoints + ' bonus points expected ' + expectedFromDealer + ' points from dealer but receive ' + result.dealer + ' points from dealer');
+                ok(result.nonDealer === expectedFromNonDealer, 'Non-dealer tsumo with ' + han + ' han and ' + fu + ' fu and ' + bonusPoints + ' bonus points expected ' + expectedFromNonDealer + ' points from non-dealer but receive ' + result.nonDealer + ' points from non-dealer');
+            }
+        });
+        
         var nonDealerRon = [
             { han: 1, fu: 20, expected: 700 },
             { han: 1, fu: 30, expected: 1000 },
@@ -565,5 +603,16 @@ function TestPointerPoint() {
             }
         });
         
+        test('bonus points must be pay by the only losing player during non-dealer ron', function () {
+            var bonusPoints = 300;
+            nonDealerHand.winningType = 'ron';
+            for (var i = 0; i < nonDealerRon.length; i++) {
+                var han = nonDealerRon[i].han,
+                    fu = nonDealerRon[i].fu,
+                    expected = nonDealerRon[i].expected + bonusPoints,
+                    result = pointCalculator.calculate(nonDealerHand, han, fu, bonusPoints);
+                ok(result === expected, 'Non-dealer ron with ' + han + ' han and ' + fu + ' fu and ' + bonusPoints + ' bonus points expected ' + expected + ' points but receive ' + result + ' points');
+            }
+        });
     };
 }
